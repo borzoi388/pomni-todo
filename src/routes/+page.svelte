@@ -2,16 +2,81 @@
 	import { writable } from 'svelte/store'
 	import { onMount } from 'svelte'
 
+	type Task = {submission: string, description: string, date: Date | undefined, category: number, important: boolean; index: number}
+
+	//i'm sorry for this horrific block of an array but i don't know how to import data yet 😝
+	let defaultColors: Array<{color: string; text: string; custom: boolean}> = [
+		{ color: "Salmon", text: "purple", custom: false},
+		{ color: "PeachPuff", text: "purple", custom: false},
+		{ color: "PapayaWhip", text: "purple", custom: false},
+		{ color: "PaleGreen", text: "purple", custom: false},
+		{ color: "PaleTurquoise", text: "purple", custom: false},
+		{ color: "LightSkyBlue", text: "purple", custom: false},
+		{ color: "Plum", text: "purple", custom: false},
+		{ color: "LightPink", text: "purple", custom: false},
+		{ color: "Crimson", text: "lemonchiffon", custom: false},
+		{ color: "DarkOrange", text: "lemonchiffon", custom: false},
+		{ color: "Gold", text: "purple", custom: false},
+		{ color: "YellowGreen", text: "purple", custom: false},
+		{ color: "LightSeaGreen", text: "lemonchiffon", custom: false},
+		{ color: "SteelBlue", text: "lemonchiffon", custom: false},
+		{ color: "MediumOrchid", text: "lemonchiffon", custom: false},
+		{ color: "HotPink", text: "lemonchiffon", custom: false},
+		{ color: "FireBrick", text: "lemonchiffon", custom: false},
+		{ color: "Chocolate", text: "lemonchiffon", custom: false},
+		{ color: "Orange", text: "lemonchiffon", custom: false},
+		{ color: "SeaGreen", text: "lemonchiffon", custom: false},
+		{ color: "Teal", text: "lemonchiffon", custom: false},
+		{ color: "RoyalBlue", text: "lemonchiffon", custom: false},
+		{ color: "RebeccaPurple", text: "lemonchiffon", custom: false},
+		{ color: "MediumVioletRed", text: "lemonchiffon", custom: false},
+		{ color: "GhostWhite", text: "purple", custom: false},
+		{ color: "LightSteelBlue", text: "purple", custom: false},
+		{ color: "SlateGray", text: "lemonchiffon", custom: false},
+		{ color: "DarkSlateGray", text: "lemonchiffon", custom: false},
+		{ color: "#008FC4", text: "lemonchiffon", custom: false},
+	]
 
 	let isFirstTime = writable("true");
+	let months = writable<Array<Task>>([])
+	let categories = writable<Array<{color: number, name: string}>>([
+		{ color: 25, name: "Unsorted" },
+	])
+	let colors = writable<Array<{color: string; text: string; custom: boolean}>>([...defaultColors])
+	let completedTasks = writable<Array<Task>>([])
 
 	onMount(() => {
 		const storedIsFirstTime = localStorage.getItem("isFirstTime");
+		const storedTasks = localStorage.getItem("tasks");
+		const storedCates = localStorage.getItem("categories");
+		const storedColors = localStorage.getItem("colors");
+		const storedComp = localStorage.getItem("completed");
+
+	
+		
 		isFirstTime = writable(storedIsFirstTime ? String(storedIsFirstTime) : "true")
+		months = writable(storedTasks ? JSON.parse(storedTasks) : [])
+		categories = writable(storedCates ? JSON.parse(storedCates) : [{ color: 25, name: "Unsorted" }])
+		colors = writable(storedColors ? JSON.parse(storedColors) : [...defaultColors]);
+		completedTasks = writable(storedComp ? JSON.parse(storedComp) : []);
+
 
 		isFirstTime.subscribe((value) => {
 			localStorage.setItem("isFirstTime", value.toString());
 		})
+		months.subscribe((value) => {
+			localStorage.setItem("tasks", JSON.stringify(value));
+		})
+		categories.subscribe((value) => {
+			localStorage.setItem("categories", JSON.stringify(value));
+		})
+		colors.subscribe((value) => {
+			localStorage.setItem("colors", JSON.stringify(value));
+		})
+		completedTasks.subscribe((value) => {
+			localStorage.setItem("completed", JSON.stringify(value));
+		})
+
 	})
 
 
@@ -25,51 +90,13 @@
 	let date: string | undefined
 	let time: string | undefined
 
-	type Task = {submission: string, description: string, date: Date | undefined, category: number, important: boolean; index: number}
 
-	let months: Array<Task> = []
 	let compButtonStates: Array<{restore: boolean, delete: boolean}> = [
 		{ restore: false, delete: false }
 	]
 
-	let categories: Array<{color: number, name: string}> = [
-		{ color: 25, name: "Unsorted" },
-	]
 
-	let completedtasks: Array<Task> = []
 
-	//i'm sorry for this horrific block of an array but i don't know how to import data yet 😝
-	let colors: Array<{color: string; text: string; custom: boolean}> = [
-            { color: "Salmon", text: "purple", custom: false},
-            { color: "PeachPuff", text: "purple", custom: false},
-            { color: "PapayaWhip", text: "purple", custom: false},
-            { color: "PaleGreen", text: "purple", custom: false},
-            { color: "PaleTurquoise", text: "purple", custom: false},
-            { color: "LightSkyBlue", text: "purple", custom: false},
-            { color: "Plum", text: "purple", custom: false},
-            { color: "LightPink", text: "purple", custom: false},
-            { color: "Crimson", text: "lemonchiffon", custom: false},
-            { color: "DarkOrange", text: "lemonchiffon", custom: false},
-            { color: "Gold", text: "purple", custom: false},
-            { color: "YellowGreen", text: "purple", custom: false},
-            { color: "LightSeaGreen", text: "lemonchiffon", custom: false},
-            { color: "SteelBlue", text: "lemonchiffon", custom: false},
-            { color: "MediumOrchid", text: "lemonchiffon", custom: false},
-            { color: "HotPink", text: "lemonchiffon", custom: false},
-            { color: "FireBrick", text: "lemonchiffon", custom: false},
-            { color: "Chocolate", text: "lemonchiffon", custom: false},
-            { color: "Orange", text: "lemonchiffon", custom: false},
-            { color: "SeaGreen", text: "lemonchiffon", custom: false},
-            { color: "Teal", text: "lemonchiffon", custom: false},
-            { color: "RoyalBlue", text: "lemonchiffon", custom: false},
-            { color: "RebeccaPurple", text: "lemonchiffon", custom: false},
-            { color: "MediumVioletRed", text: "lemonchiffon", custom: false},
-            { color: "GhostWhite", text: "purple", custom: false},
-            { color: "LightSteelBlue", text: "purple", custom: false},
-            { color: "SlateGray", text: "lemonchiffon", custom: false},
-            { color: "DarkSlateGray", text: "lemonchiffon", custom: false},
-            { color: "#008FC4", text: "lemonchiffon", custom: false},
-        ]
 
 	let tasksubmission: string = ""
 	let taskdescription: string = ""
@@ -91,36 +118,36 @@
 	let sortSearch: string = ""
 
 	function dateSortTasks() {
-		for (let taskToAdd = 0; taskToAdd < months.length; taskToAdd++) {
+		for (let taskToAdd = 0; taskToAdd < $months.length; taskToAdd++) {
 			let mostRecent: number = taskToAdd;
-			for (let i = taskToAdd; i < months.length; i++) {
-				if (!months[i].date && !months[mostRecent].date && months[i].index < months[mostRecent].index) {
+			for (let i = taskToAdd; i < $months.length; i++) {
+				if (!$months[i].date && !$months[mostRecent].date && $months[i].index < $months[mostRecent].index) {
 					mostRecent = i;
-					console.log(months[i].index+" < "+months[mostRecent].index)
-				} else if ((months[i].date < months[mostRecent].date) || (!months[mostRecent].date && months[i].date)) {
+				} else if (($months[i].date < $months[mostRecent].date) || (!$months[mostRecent].date && $months[i].date)) {
 					mostRecent = i;
 				}
 			}
-			months[taskToAdd] = replace(mostRecent, taskToAdd)
+			$months[taskToAdd] = replace(mostRecent, taskToAdd)
+			months.update(() => $months);
 		}
 	}
 
 	function replace(replacedIndex: number, newIndex: number): Task {
-		console.log("replaced "+months[replacedIndex].submission+" at index "+replacedIndex+" with "+months[newIndex].submission+" at index "+newIndex)
-		let temp = months[replacedIndex]
-		months[replacedIndex] = months[newIndex]
+		let temp = $months[replacedIndex]
+		$months[replacedIndex] = $months[newIndex]
 		return temp
 	}
 
 	function indexSortTasks() {
-		for (let taskToAdd = 0; taskToAdd < months.length; taskToAdd++) {
+		for (let taskToAdd = 0; taskToAdd < $months.length; taskToAdd++) {
 			let mostRecent: number = taskToAdd;
-			for (let i = taskToAdd; i < months.length; i++) {
-				if (months[i].index < months[mostRecent].index) {
+			for (let i = taskToAdd; i < $months.length; i++) {
+				if ($months[i].index < $months[mostRecent].index) {
 					mostRecent = i;
 				}
 			}
-			months[taskToAdd] = replace(mostRecent, taskToAdd)
+			$months[taskToAdd] = replace(mostRecent, taskToAdd)
+			months.update(() => $months);
 		}
 	}
 
@@ -235,9 +262,9 @@
 
 			let tempDate = getDate();
 			if (tempDate && tempDate < new Date()) {alert("Please enter a valid date!")} else {
-			months = [
-				...months,
-				{ submission: tasksubmission, description: taskdescription, date: tempDate, category: cateNumber, important: isImportant, index: months.length }
+			$months = [
+				...$months,
+				{ submission: tasksubmission, description: taskdescription, date: tempDate, category: cateNumber, important: isImportant, index: $months.length }
 			]
 			date = undefined;
 			time = undefined;
@@ -252,6 +279,7 @@
 				}
 			}
 		}
+		months.update(() => $months);
 
 	}
 
@@ -277,14 +305,15 @@
 			addColsOpen = false
 			colorDialog.closeDialog()
 			colorsOpen = false
-			categories = [
-				...categories,
+			$categories = [
+				...$categories,
 				{color: colorNumber, name: categorysubmission}
 			]
 			categorysubmission = ""
 			colorNumber = 4
-			cateNumber = categories.length-1
+			cateNumber = $categories.length-1
 		}
+		categories.update(() => $categories)
 	}
 
 	function toggleColorPick() {
@@ -320,24 +349,27 @@
 	}
 
 	function completed(selected: number) {
-		completedtasks = [
-			...completedtasks,
-			months[selected],
+		$completedTasks = [
+			...$completedTasks,
+			$months[selected],
 		]
 		compButtonStates = [
 			...compButtonStates,
 			{ restore: false, delete: false }
 		]
-		months.splice(selected, 1)
-		months = months
-		completedtasks = completedtasks
+		$months.splice(selected, 1)
+		$months = $months
+		months.update(() => $months);
+		$completedTasks = $completedTasks
+		completedTasks.update(() => $completedTasks)
 	}
 
 	function deleteComp(selected: number) {
 		if (compButtonStates[selected].delete === true) {
 			compButtonStates.splice(selected, 1)
-			completedtasks.splice(selected, 1)
-			completedtasks = completedtasks
+			$completedTasks.splice(selected, 1)
+			$completedTasks = $completedTasks
+			completedTasks.update(() => $completedTasks)
 		} else {
 			compButtonStates[selected].delete = true
 		}
@@ -345,20 +377,20 @@
 
 	function restoreTask(selected: number) {
 		if (compButtonStates[selected].restore === true) {
-			months = [
-				...months,
+			$months = [
+				...$months,
 				{ 
-					submission: completedtasks[selected].submission, 
-					description: completedtasks[selected].description, 
-					date: completedtasks[selected].date, 
-					category: completedtasks[selected].category,
-					important: completedtasks[selected].important,
-					index: months.length
+					submission: $completedTasks[selected].submission, 
+					description: $completedTasks[selected].description, 
+					date: $completedTasks[selected].date, 
+					category: $completedTasks[selected].category,
+					important: $completedTasks[selected].important,
+					index: $months.length
 				}
 			]
-			completedtasks.splice(selected, 1)
+			$completedTasks.splice(selected, 1)
 			compButtonStates.splice(selected, 1)
-			completedtasks = completedtasks
+			$completedTasks = $completedTasks
 		} else {
 			compButtonStates[selected].restore = true
 		}
@@ -388,19 +420,13 @@
 			alert("Please input a color!")
 		} else {
 			if (textDark === true) {
-				colors = [
-					...colors,
-					{ color: colorSubmission , text: "purple", custom: true }
-				]
+				$colors = [...$colors, {color: colorSubmission , text: "purple", custom: true}]
 			} else {
-				colors = [
-					...colors,
-					{ color: colorSubmission , text: "lemonchiffon", custom: true }
-				]
+				$colors = [...$colors, {color: colorSubmission , text: "lemonchiffon", custom: true}]
 			}
-
 			addColDialog.closeDialog()
 			colorSubmission = ""
+			colors.update(() => $colors);
 		}
 	}
 
@@ -448,15 +474,15 @@
 
 		<div style="display: block; width: 100%">
 			<label class="text">Category:
-				<button on:click={toggleOpenCate} style="margin-bottom: 10px; background-color: {colors[categories[cateNumber].color].color}; color: {colors[categories[cateNumber].color].text}">
-					{categories[cateNumber].name}
+				<button on:click={toggleOpenCate} style="margin-bottom: 10px; background-color: {$colors[$categories[cateNumber].color].color}; color: {$colors[$categories[cateNumber].color].text}">
+					{$categories[cateNumber].name}
 				</button>
 			</label>
 		</div>
 		<!--CATEGORY CHOOSE-->
 		<Dialog bind:this={selectDialog}>
-			{#each categories as { color, name }, i}
-				<button on:click={() => selectCate(i)} style="background-color: {colors[color].color}; margin: 5px; color: {colors[color].text}">{name}</button>
+			{#each $categories as { color, name }, i}
+				<button on:click={() => selectCate(i)} style="background-color: {$colors[color].color}; margin: 5px; color: {$colors[color].text}">{name}</button>
 			{/each}
 			<button on:click={toggleAddCate} style="margin: 5px; background-color: transparent">＋</button>
 		</Dialog>
@@ -478,12 +504,12 @@
 			<div class="half" style="width: 100%; margin-bottom: 10px">
 				<div style="grid-column-start: col1; grid-column-end: middle; margin-right: 5px">
 					<label class="text">Color:
-						<button on:click={toggleColors} style="background-color: {colors[colorNumber].color}; color: {colors[colorNumber].text}">
+						<button on:click={toggleColors} style="background-color: {$colors[colorNumber].color}; color: {$colors[colorNumber].text}">
 							🦐
 						</button>
 					</label>
 				</div>
-				{#if colors.length > 29 && colorsOpen === true}
+				{#if $colors.length > 29 && colorsOpen === true}
 					<button on:click={toggleCustom} style="grid-column-start: middle; grid-column-end: end">
 						{#if showCustom === false}
 							Filter: All
@@ -497,13 +523,13 @@
 			<!--CHOOSE COLOR DIALOG-->
 			<ColDialog bind:this={colorDialog}>
 				{#if showCustom === false}
-					{#each colors as { color, text}, i}
+					{#each $colors as { color, text}, i}
 						<button on:click={() => selectColor(i)} style="background-color: {color}; margin: 5px; color: {text}">
 							🦐
 						</button>
 					{/each}
 				{:else}
-					{#each colors as { color, text, custom }, i}
+					{#each $colors as { color, text, custom }, i}
 						{#if custom === true}
 							<button on:click={() => selectColor(i)} style="background-color: {color}; margin: 5px; color: {text}">
 								🦐
@@ -589,7 +615,7 @@
 				<label class="text">
 					Filter:
 						{#if sortNumber > -1}
-							<button on:click={toggleSort} style="background-color: {colors[categories[sortNumber].color].color}; color: {colors[categories[sortNumber].color].text}">{categories[sortNumber].name}</button>
+							<button on:click={toggleSort} style="background-color: {$colors[$categories[sortNumber].color].color}; color: {$colors[$categories[sortNumber].color].text}">{$categories[sortNumber].name}</button>
 						{:else}
 							<button on:click={toggleSort}>None</button>
 						{/if}
@@ -600,25 +626,25 @@
 			<button on:click={() => sortCate(-1)} style="margin: 5px;">
 				Show All
 			</button>
-			{#each categories as { color, name }, i}
-				<button on:click={() => sortCate(i)} style="background-color: {colors[color].color}; margin: 5px; color: {colors[color].text}">{name}</button>
+			{#each $categories as { color, name }, i}
+				<button on:click={() => sortCate(i)} style="background-color: {$colors[color].color}; margin: 5px; color: {$colors[color].text}">{name}</button>
 			{/each}
 		</SortByDialog>
 	</div>
 
 <div class="todolist border" style="padding: 5px; max-height: 70vh; overflow-y: scroll">
-	{#if (isFirstTime == "true")}
+	{#if ($isFirstTime == "true")}
 		<div class="blahaj">
 			<span class="message">Time to add a task! :3</span>
 		</div>
 	{:else if showCompleted === false}
-		{#if months.length < 1}
+		{#if $months.length < 1}
 			<div class="yippee">
 				<span class="message">all done!</span>
 			</div>
 		{:else if (
-			(months.filter(obj => obj["category"] === sortNumber).length === 0 && sortNumber > -1) ||
-			(months.filter(obj => obj["submission"].toLowerCase().includes(sortSearch.toLowerCase())).length === 0 && sortSearch.length > 0)
+			($months.filter(obj => obj["category"] === sortNumber).length === 0 && sortNumber > -1) ||
+			($months.filter(obj => obj["submission"].toLowerCase().includes(sortSearch.toLowerCase())).length === 0 && sortSearch.length > 0)
 		)}
 			<div class="dawg">
 				<span class="message">
@@ -629,7 +655,7 @@
 			<button on:click={toggleSortByDate}>
 				{isSortingByDate ? 'Sort by creation date' : 'Sort by due date'}
 			</button>
-			{#each months as { submission, description, date, category, important }, i}
+			{#each $months as { submission, description, date, category, important }, i}
 				<!--TASK-->
 				{#if (important)} 
 					{#if 
@@ -644,8 +670,8 @@
 							</button>
 							<!--CATEGORY OF TASK-->
 							<div class="half" style="grid-column-start: task; grid-column-end: end; margin-left: 10px; ">
-								<div class="border cateLabel" style="padding: 10px; background-color: {colors[categories[category].color].color}; color: {colors[categories[category].color].text}">
-									{categories[category].name}
+								<div class="border cateLabel" style="padding: 10px; background-color: {$colors[$categories[category].color].color}; color: {$colors[$categories[category].color].text}">
+									{$categories[category].name}
 								</div>
 
 								<!--TITLE OF TASK-->
@@ -682,7 +708,7 @@
 					{/if}
 					{/if}
 				{/each}
-			{#each months as { submission, description, date, category, important }, i}
+			{#each $months as { submission, description, date, category, important }, i}
 			<!--TASK-->
 				{#if (!important)}
 					{#if 
@@ -697,8 +723,8 @@
 							</button>
 							<!--CATEGORY OF TASK-->
 							<div class="half" style="grid-column-start: task; grid-column-end: end; margin-left: 10px">
-								<div class="border cateLabel" style="padding: 10px; background-color: {colors[categories[category].color].color}; color: {colors[categories[category].color].text}">
-									{categories[category].name}
+								<div class="border cateLabel" style="padding: 10px; background-color: {$colors[$categories[category].color].color}; color: {$colors[$categories[category].color].text}">
+									{$categories[category].name}
 								</div>
 
 								<!--TITLE OF TASK-->
@@ -732,15 +758,15 @@
 			{/each}
 		{/if}
 	{:else}
-		{#if completedtasks.length < 1}
+		{#if $completedTasks.length < 1}
 			<div class="cat">
 				<span class="message">
 					no completed tasks here 👍
 				</span>
 			</div>
 			{:else if (
-				(completedtasks.filter(obj => obj["category"] === sortNumber).length === 0 && sortNumber > -1) ||
-				(completedtasks.filter(obj => obj["submission"].toLowerCase().includes(sortSearch.toLowerCase())).length === 0 && sortSearch.length > 0)
+				($completedTasks.filter(obj => obj["category"] === sortNumber).length === 0 && sortNumber > -1) ||
+				($completedTasks.filter(obj => obj["submission"].toLowerCase().includes(sortSearch.toLowerCase())).length === 0 && sortSearch.length > 0)
 			)}
 			<div class="dawg">
 				<span class="message">
@@ -748,7 +774,7 @@
 				</span>
 			</div>
 		{:else}
-			{#each completedtasks as { submission, description, date, category }, i}
+			{#each $completedTasks as { submission, description, date, category }, i}
 				{#if 
 					(sortNumber < 0 && sortSearch.length < 1) || 
 					(sortNumber > -1 && sortNumber === category && sortSearch.length < 1) || 
@@ -758,8 +784,8 @@
 					<div class="task">
 						<!--CATEGORY OF TASK-->
 						<div class="half" style="grid-column-start: check; grid-column-end: end; margin-bottom: 5px;">
-							<div class="border cateLabel" style="padding: 10px; background-color: {colors[categories[category].color].color}; color: {colors[categories[category].color].text}; margin-bottom: 2.5px">
-								{categories[category].name}
+							<div class="border cateLabel" style="padding: 10px; background-color: {$colors[$categories[category].color].color}; color: {$colors[$categories[category].color].text}; margin-bottom: 2.5px">
+								{$categories[category].name}
 							</div>
 
 							<!--TITLE OF TASK-->
