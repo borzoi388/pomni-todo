@@ -7,7 +7,7 @@
 - Search and filter tasks by categories
 - Assign due dates to tasks and sort the todo list by due date or creation date
 - Lots of gifs :3
+- localStorage data storage! (finally)
 
 ## Things I might add in the future
-- Backend :(
 - Log in/user database!?

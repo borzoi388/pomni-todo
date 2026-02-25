@@ -60,6 +60,9 @@
 		colors = writable(storedColors ? JSON.parse(storedColors) : [...defaultColors]);
 		completedTasks = writable(storedComp ? JSON.parse(storedComp) : []);
 
+		for (let i = 0; i < $months.length; i++) {
+			$months[i].date = new Date($months[i].date);
+		}
 
 		isFirstTime.subscribe((value) => {
 			localStorage.setItem("isFirstTime", value.toString());
