@@ -1,3 +1,78 @@
+/* "glup",
+			"gnulp",
+			"sad",
+			"water_cat"
+		][Math.floor(Math.random()*4)]
+		
+	}
+
+	function randomCompletedPopup(): {image: string, msg: string} {
+		return {
+			image: [
+				"silly_dog",
+				"thumbs",
+				"yay",
+				"gnarp"
+			][Math.floor(Math.random()*4)],
+			msg: [
+				"WELL DONE!!!!!",
+				"NICE JOB!!!!!",
+				"GOOD WORK!!!",
+			][Math.floor(Math.random()*3)]
+		}
+	}
+
+	function randomImportantPopup(): {image: string, msg: string} {
+		return {
+			image: [
+				"knee",
+				"splendid",
+				"green_skeleton", */
+
+.gnulp {
+    background: url(./lib/images/gnulp.gif)
+}
+
+.sad {
+    background: url(./lib/images/sad.gif)
+}
+
+.water_cat {
+    background: url(./lib/images/water_cat.gif)
+}
+
+.silly_dog {
+    background: url(./lib/images/silly_dog.gif)
+}
+
+.thumbs {
+    background: url(./lib/images/thumbs.gif)
+}
+
+.yay {
+    background: url(./lib/images/yay.gif)
+}
+
+.gnarp {
+    background: url(./lib/images/gnarp.gif)
+}
+
+.knee {
+    background: url(./lib/images/knee.gif)
+}
+
+.splendid {
+    background: url(./lib/images/splendid.gif)
+}
+
+.glup {
+    background: url(./lib/images/glup.jpg)
+}
+
+.green_skeleton {
+    background: url(./lib/images/green_skeleton.gif)
+}
+
 h3 {
     color: purple;
     font-weight: bold;
