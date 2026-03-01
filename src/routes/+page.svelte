@@ -34,7 +34,7 @@
 		{ color: "LightSteelBlue", text: "purple", custom: false},
 		{ color: "SlateGray", text: "lemonchiffon", custom: false},
 		{ color: "DarkSlateGray", text: "lemonchiffon", custom: false},
-		{ color: "url(/src/lib/images/weezer.jpg) center center / cover", text: "lemonchiffon", custom: false},
+		{ color: "url(weezer.jpg) center center / cover", text: "lemonchiffon", custom: false},
 	]
 
 	let isFirstTime =$state(writable("true"));
