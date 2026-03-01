@@ -13,7 +13,7 @@
         animating++;
         popups = [
             ...popups,
-            {msg: popup.msg, image: "./lib/images/"+popup.image, top: 25+Math.random()*50, left: 25+Math.random()*50}
+            {msg: popup.msg, image: popup.image, top: 25+Math.random()*50, left: 25+Math.random()*50}
         ]
         await sleep(2600);
         animating--;

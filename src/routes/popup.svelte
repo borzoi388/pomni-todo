@@ -32,7 +32,7 @@
                     duration: 300
                 }
             )
-            await sleep(1000)
+            await sleep(2000)
             animate(text, {
                     scale: [1, 0.5],
                     opacity: [1, 0],
@@ -53,7 +53,7 @@
         }
     }
 </script>
-<div bind:this={div} class="dialog" style="background: url(/src/lib/images/{image}) center center / cover; top: {top}%; left: {left}%; opacity: 0">
+<div bind:this={div} class="dialog" style="background: url({image}) center center / cover; top: {top}%; left: {left}%; opacity: 0">
     </div>
 <div bind:this={text} style="background: purple; color: lemonchiffon; position: fixed; top: {top}%; left: {left}%; font-size: 2em; opacity: 0; z-index: 500">{msg}</div>
 <style>
