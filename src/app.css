@@ -1,4 +1,36 @@
 
+/* idk how github pages images work gang i have to do this */
+
+.beans {
+    background: url(./lib/images/beans.gif)
+}
+
+.angy {
+    background: url(./lib/images/angy.gif)
+}
+
+.crunch {
+    background: url(./lib/images/crunch.gif)
+}
+.dance {
+    background: url(./lib/images/dance)
+}
+.milk {
+    background: url(./lib/images/milk.gif)
+}
+
+.pat-pat {
+    background: url(./lib/images/pat-pat.gif)
+}
+
+.robot {
+    background: url(./lib/images/robot.gif)
+}
+
+.wat {
+    background: url(./lib/images/wat.gif)
+}
+
 .gnulp {
     background: url(./lib/images/gnulp.gif)
 }
