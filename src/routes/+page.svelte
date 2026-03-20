@@ -44,7 +44,7 @@
 
 	let isFirstTime =$state(writable("true"));
 	let showAddTask: boolean = $state(false);
-	let showCats: boolean = $state(false);
+	let showCats: boolean = $state(true);
 	let months = $state(writable<Array<Task>>([]));
 	let categories = $state(writable<Array<{color: number, name: string}>>([
 		{ color: 25, name: "Unsorted" },
