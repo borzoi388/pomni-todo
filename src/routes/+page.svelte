@@ -994,7 +994,7 @@
 		<div style="width: 100vw; height: 100vh; position: fixed; top: 0px; left: 0px; background: lightpink; display: flex; flex-direction: column; justify-content: center; align-items: center; font-size: 24px; font-style: italic; color: purple; text-align: center">
 			<span>Hi! Welcome to my to-do website. </span>
 			<span>‼️A lot of flashing images ahead‼️. Also not mobile friendly. If you don't want to get flashbanged don't continue </span>
-			<span>It is meant to be satire but it has functionality.</span>
+			<span>It is meant to be satire but it has functionality. (Check the readme for everything it has)</span>
 			<span>If you have the time plz try sorting the tasks or letting a task go overdue for an epic surprise :D</span>
 			<button onclick={() => isFirstTime.update(() => "false")} style="font-size: 24px">Proceed</button>
 		</div>
